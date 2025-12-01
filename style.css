@@ -1,0 +1,775 @@
+
+/* --- Cyberpunk Theme & Custom Styles --- */
+:root {
+    --bg-color: #0d0221; /* Dark purple/blue */
+    --primary-color: #00ffff; /* Neon Cyan */
+    --secondary-color: #ff00ff; /* Neon Magenta */
+    --tertiary-color: #00ff00; /* Neon Green */
+    --text-color: #f0f0f0;
+}
+
+/* Apply base styles */
+body {
+    color: var(--text-color);
+    font-family: "Share Tech Mono", monospace;
+    overflow: hidden; /* Hide scrollbars during loading */
+    margin: 0;
+    padding: 0;
+}
+
+/* Headings Font */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Orbitron", sans-serif;
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color),
+        0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+
+/* --- Loading Screen --- */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 1s ease-out;
+}
+
+#terminal {
+    width: 100%;
+    height: calc(100vh - 80px); /* Leave space for progress bar */
+    font-family: "Share Tech Mono", monospace;
+    color: var(--text-color);
+    overflow-y: auto;
+    font-size: 0.9rem;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#terminal p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+#terminal .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.2em;
+    background-color: var(--tertiary-color);
+    animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Progress Bar Container */
+.progress-container {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border-top: 1px solid #333;
+}
+
+.progress-bar-container {
+    width: 80%;
+    max-width: 600px;
+    height: 15px;
+    background-color: #111;
+    border: 1px solid var(--tertiary-color);
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--tertiary-color);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.8rem;
+    color: var(--tertiary-color);
+}
+
+/* --- Main App Container --- */
+#app {
+    opacity: 0;
+    transition: opacity 1s ease-in;
+    visibility: hidden;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Add scan lines effect */
+    position: relative;
+    z-index: 10; /* Ensure app is above particles */
+}
+
+#app::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+            rgba(18, 16, 16, 0) 50%,
+            rgba(0, 0, 0, 0.25) 50%
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255, 0, 0, 0.03),
+            rgba(0, 255, 0, 0.02),
+            rgba(0, 0, 255, 0.03)
+        );
+    background-size: 100% 3px, 5px 100%;
+    z-index: 2;
+    pointer-events: none;
+    animation: scanlines 0.2s infinite alternate;
+}
+
+/* Particles Container Styles (Background Layer) */
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+    z-index: -1; /* Lower than app but above body */
+}
+
+/* --- Interactive Particle Effect --- */
+.particle-info {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--tertiary-color);
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid var(--tertiary-color);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 0.8rem;
+    z-index: 1000; /* Ensure particle info is above all content */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.particle-info.visible {
+    opacity: 1;
+}
+
+@keyframes scanlines {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(2px);
+    }
+}
+
+/* --- Page Sections --- */
+.page {
+    display: none; /* Hidden by default */
+    min-height: calc(100vh - 80px); /* Full height minus nav */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Cyberpunk Button Style --- */
+.btn-cyber {
+    font-family: "Orbitron", sans-serif;
+    padding: 12px 24px;
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color),
+        inset 0 0 5px rgba(0, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-cyber::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 255, 255, 0.5),
+        transparent
+    );
+    transition: left 0.4s ease;
+}
+
+.btn-cyber:hover {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    text-shadow: none;
+    box-shadow: 0 0 20px var(--primary-color);
+}
+
+.btn-cyber:hover::before {
+    left: 100%;
+}
+
+/* Secondary button style */
+.btn-cyber.secondary {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color),
+        inset 0 0 5px rgba(255, 0, 255, 0.5);
+}
+
+.btn-cyber.secondary:hover {
+    background-color: var(--secondary-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 20px var(--secondary-color);
+}
+
+.btn-cyber.secondary::before {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 0, 255, 0.5),
+        transparent
+    );
+}
+
+/* Tertiary button style (for game button) */
+.btn-cyber.tertiary {
+    border-color: var(--tertiary-color);
+    color: var(--tertiary-color);
+    text-shadow: 0 0 5px var(--tertiary-color);
+    box-shadow: 0 0 10px var(--tertiary-color),
+        inset 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.btn-cyber.tertiary:hover {
+    background-color: var(--tertiary-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 20px var(--tertiary-color);
+}
+
+.btn-cyber.tertiary::before {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 255, 0, 0.5),
+        transparent
+    );
+}
+
+/* --- Navigation --- */
+nav {
+    background-color: rgba(13, 2, 33, 0.8);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--primary-color);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.nav-link {
+    font-family: "Orbitron", sans-serif;
+    cursor: pointer;
+    padding: 8px 12px;
+    color: var(--text-color);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* --- Card Styles --- */
+.cyber-card {
+    background-color: rgba(26, 12, 59, 0.6);
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3),
+        inset 0 0 5px rgba(0, 255, 255, 0.2);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.cyber-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.5),
+        inset 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* Project Card Specifics */
+.project-card {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card .card-content {
+    position: relative;
+    z-index: 2;
+    background-color: rgba(13, 2, 33, 0.8);
+    transition: background-color 0.3s ease;
+}
+
+.project-card:hover .card-content {
+    background-color: rgba(13, 2, 33, 0.95);
+}
+
+/* Glitch effect for headers */
+.glitch {
+    position: relative;
+    animation: glitch-anim 2.5s infinite steps(8);
+}
+
+@keyframes glitch-anim {
+    0% {
+        text-shadow: 1px 0 0 var(--secondary-color),
+            -1px 0 0 var(--primary-color);
+        clip: rect(22px, 9999px, 98px, 0);
+    }
+    10% {
+        clip: rect(44px, 9999px, 102px, 0);
+    }
+    20% {
+        text-shadow: -1px 0 0 var(--secondary-color),
+            1px 0 0 var(--primary-color);
+        clip: rect(88px, 9999px, 40px, 0);
+    }
+    30% {
+        text-shadow: 1px 0 0 var(--secondary-color),
+            -1px 0 0 var(--primary-color);
+        clip: rect(12px, 9999px, 82px, 0);
+    }
+    40% {
+        text-shadow: -1px 0 0 var(--secondary-color),
+            1px 0 0 var(--primary-color);
+        clip: rect(5px, 9999px, 75px, 0);
+    }
+    50% {
+        text-shadow: 1px 0 0 var(--secondary-color),
+            -1px 0 0 var(--primary-color);
+        clip: rect(60px, 9999px, 10px, 0);
+    }
+    60% {
+        clip: rect(33px, 9999px, 90px, 0);
+    }
+    70% {
+        clip: rect(70px, 9999px, 50px, 0);
+    }
+    80% {
+        clip: rect(10px, 9999px, 85px, 0);
+    }
+    90% {
+        clip: rect(45px, 9999px, 65px, 0);
+    }
+    100% {
+        text-shadow: -1px 0 0 var(--secondary-color),
+            1px 0 0 var(--primary-color);
+        clip: rect(22px, 9999px, 98px, 0);
+    }
+}
+
+/* --- Form Inputs --- */
+.cyber-input {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--primary-color);
+    color: var(--text-color);
+    padding: 10px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 5px rgba(0, 255, 255, 0.3);
+}
+
+.cyber-input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color),
+        inset 0 0 5px rgba(255, 0, 255, 0.5);
+}
+
+/* --- Social Media Icons --- */
+.social-icons {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.social-icons ul {
+    position: relative;
+    display: flex;
+    transform: rotateX(20deg) rotateY(0deg) rotateZ(0deg) skewX(0deg);
+    transform-style: preserve-3d;
+}
+
+.social-icons li {
+    position: relative;
+    list-style: none;
+    width: 60px;
+    height: 60px;
+    margin: 0px 20px;
+}
+
+.social-icons li:before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    width: 100%;
+    height: 10px;
+    background: #2a2a2a;
+    transform-origin: top;
+    transform: skewX(0deg) rotateX(-90deg);
+    z-index: -1;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.social-icons li:after {
+    content: '';
+    position: absolute;
+    left: -9px;
+    width: 9px;
+    height: 100%;
+    background: #2a2a2a;
+    transform-origin: right;
+    display: none;
+}
+
+.social-icons li span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex !important;
+    background: #2a2a2a;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 30px !important;
+    transition: 1.5s ease-out;
+    border-radius: 8px;
+}
+
+.social-icons li:hover span {
+    z-index: 1000;
+    transition: .3s;
+    color: #fff;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, .5);
+}
+
+.social-icons li:hover span:nth-child(5) {
+    transform: translate(0px, -40px);
+    opacity: 1;
+}
+
+.social-icons li:hover span:nth-child(4) {
+    transform: translate(0px, -30px);
+    opacity: .8;
+}
+
+.social-icons li:hover span:nth-child(3) {
+    transform: translate(0px, -20px);
+    opacity: .6;
+}
+
+.social-icons li:hover span:nth-child(2) {
+    transform: translate(0px, -10px);
+    opacity: .4;
+}
+
+.social-icons li:hover span:nth-child(1) {
+    transform: translate(0px, 0px);
+    opacity: .2;
+}
+
+.social-icons li:nth-child(1):hover span {
+    background: #52E19F !important;
+}
+
+.social-icons li:nth-child(2):hover span {
+    background: #3e4444 !important;
+}
+
+.social-icons li:nth-child(3):hover span {
+    background: #EA6E96 !important;
+}
+
+.social-icons li:nth-child(4):hover span {
+    background: #2C2456 !important;
+}
+
+/* --- Button Container --- */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* --- Developer Picture --- */
+.developer-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.developer-picture {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 3px solid var(--primary-color);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+    margin-bottom: 20px;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.developer-picture:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+}
+
+.name-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* --- Timeline Styles (Two-Sided Cyberpunk Design) --- */
+
+.timeline-cyberpunk {
+    position: relative;
+    padding: 0 10px;
+}
+
+/* The central vertical neon line */
+.timeline-cyberpunk::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background-color: var(--primary-color);
+    box-shadow: 0 0 15px var(--primary-color);
+    top: 0;
+    bottom: 0;
+    left: 50%; /* Set line perfectly at 50% */
+    margin-left: -2px;
+    animation: pulse-line 5s infinite;
+    z-index: 1;
+}
+
+/* Animation for the central line (Kept existing) */
+@keyframes pulse-line {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; box-shadow: 0 0 20px var(--primary-color); }
+    100% { opacity: 0.8; }
+}
+
+.timeline-item {
+    padding: 10px 0;
+    position: relative;
+    margin-bottom: 40px; 
+}
+
+/* Clear floating elements for better layout */
+.timeline-item::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Dot/Node for the timeline */
+.timeline-dot {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--secondary-color);
+    top: 35px;
+    left: 50%; /* Dot position is always at the center line */
+    transform: translateX(-50%); /* Center the dot exactly on the 50% line */
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+/* General card styling for two-column desktop view */
+.timeline-card {
+    position: relative;
+    width: 47%; /* Adjusted to 47% (47 + 47 = 94. 100 - 94 = 6. 3% gap on each side) */
+    min-height: 100px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* LEFT Side Item */
+.timeline-item-left .timeline-card {
+    float: left; 
+    margin-right: 3%; /* Creates 3% gap between card and center line */
+}
+
+/* RIGHT Side Item */
+.timeline-item-right .timeline-card {
+    float: right;
+    margin-left: 3%; /* Creates 3% gap between center line and card */
+}
+
+/* Small Connecting Line from Dot to Card (Right side) - connects from the left of the card */
+.timeline-item-right .timeline-card::before {
+    content: '';
+    position: absolute;
+    top: 39px;
+    left: -20px; 
+    width: 20px;
+    height: 2px;
+    background-color: var(--primary-color);
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* Small Connecting Line from Dot to Card (Left side) - connects from the right of the card */
+.timeline-item-left .timeline-card::before {
+    content: '';
+    position: absolute;
+    top: 39px;
+    right: -20px; 
+    width: 20px;
+    height: 2px;
+    background-color: var(--primary-color);
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* Hover Effect (Kept existing) */
+.timeline-item:hover .timeline-dot {
+    transform: scale(1.5) translateX(-50%);
+    box-shadow: 0 0 20px var(--tertiary-color);
+    background-color: var(--tertiary-color);
+}
+
+/* --- Mobile Responsiveness (Single Column) --- */
+@media screen and (max-width: 768px) {
+    .timeline-cyberpunk::after {
+        /* Move the central line to the left edge for mobile */
+        left: 20px; 
+    }
+    
+    .timeline-item {
+        /* Add left padding to make space for the line */
+        padding-left: 50px;
+    }
+    
+    .timeline-card {
+        width: 100%;
+        left: 0;
+        float: none;
+        margin-left: 0; /* Clear desktop margins */
+        margin-right: 0;
+    }
+
+    /* Reset positioning for both right and left items on mobile */
+    .timeline-item-right .timeline-card,
+    .timeline-item-left .timeline-card {
+        left: 0;
+    }
+    
+    .timeline-dot {
+        /* Align the dot with the new line position */
+        left: 20px; 
+        transform: translateX(-50%);
+    }
+
+    /* Remove the small horizontal connecting lines on mobile */
+    .timeline-item-right .timeline-card::before,
+    .timeline-item-left .timeline-card::before {
+        content: none;
+    }
+}
+
+/* --- Dynamic Typing Effect --- */
+.typing-container {
+  /* Using Tailwind classes for sizing, but you can set height/font-size here */
+  /* This ensures the page doesn't jump as text types/deletes */
+  height: 3rem; /* Adjust as needed based on font size */
+}
+
+.typing-text {
+  /* Match the style of your h2 title */
+  color: var(--secondary-color);
+  text-shadow: 0 0 5px var(--secondary-color);
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.2em; /* Match the line-height */
+  background-color: var(--secondary-color); /* Match the text color */
+  margin-left: 5px;
+  
+  /* Reuse the existing blink animation from your terminal */
+  animation: blink 1s steps(1) infinite;
+}
