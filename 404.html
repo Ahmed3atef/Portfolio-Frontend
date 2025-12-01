@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <script>
+      // Get the current path
+      const path = window.location.pathname;
+
+      // Only redirect if we're not on a local server
+      if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        const repoName = '/Portfolio-Frontend/';
+        
+        // Check if the path is part of the repo
+        if (path.startsWith(repoName)) {
+          // Get the path within the app
+          const appPath = path.substring(repoName.length);
+          
+          // Redirect to the root with the path as a query parameter
+          window.location.replace(repoName + '?redirect=' + appPath);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    If you are not redirected automatically, please <a href="/Portfolio-Frontend/">click here</a>.
+  </body>
+</html>
