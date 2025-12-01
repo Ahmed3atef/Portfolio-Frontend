@@ -2,7 +2,8 @@
   "name": "portfolio-frontend",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://Ahmed3atef.github.io/",
+  "homepage": "https://Ahmed3atef.github.io/Portfolio-Frontend",
+
   "type": "module",
   "scripts": {
     "dev": "vite",
