@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 
 export default defineConfig({
+    base: "/Portfolio-Frontend/",
     plugins: [
         react(),
         VitePWA({
@@ -50,20 +51,22 @@ export default defineConfig({
             workbox: {
                 // Strategy for caching API data (if the API is read-only)
                 runtimeCaching: [
-                  {
-                    urlPattern: ({ url }) => url.origin === 'YOUR_API_BASE_URL', // e.g., 'https://api.yourdomain.com'
-                    handler: 'StaleWhileRevalidate', // Serve cached version while re-validating in the background
-                    options: {
-                      cacheName: 'api-data-cache',
-                      expiration: {
-                        maxEntries: 10,
-                        maxAgeSeconds: 60 * 60 * 24, // 24 hours
-                      },
-                      cacheableResponse: {
-                        statuses: [0, 200],
-                      },
+                    {
+                        urlPattern: ({ url }) =>
+                            url.origin ===
+                            "https://portfolio-backend-9375.fly.dev", // e.g., 'https://api.yourdomain.com'
+                        handler: "StaleWhileRevalidate", // Serve cached version while re-validating in the background
+                        options: {
+                            cacheName: "api-data-cache",
+                            expiration: {
+                                maxEntries: 10,
+                                maxAgeSeconds: 60 * 60 * 24, // 24 hours
+                            },
+                            cacheableResponse: {
+                                statuses: [0, 200],
+                            },
+                        },
                     },
-                  },
                 ],
             },
         }),
