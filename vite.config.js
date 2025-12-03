@@ -54,7 +54,7 @@ export default defineConfig({
                     {
                         urlPattern: ({ url }) =>
                             url.origin ===
-                            "https://portfolio-backend-9375.fly.dev", // e.g., 'https://api.yourdomain.com'
+                            "https://portfolio-backend-612r.onrender.com", // e.g., 'https://api.yourdomain.com'
                         handler: "StaleWhileRevalidate", // Serve cached version while re-validating in the background
                         options: {
                             cacheName: "api-data-cache",
