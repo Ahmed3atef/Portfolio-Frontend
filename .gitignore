@@ -35,3 +35,4 @@ coverage/
 .cache/
 .eslintcache
 .prettiercache
+gh-pages-deploy/
