@@ -54,7 +54,7 @@ export default defineConfig({
                     {
                         urlPattern: ({ url }) =>
                             url.origin ===
-                            "https://portfolio-backend-612r.onrender.com", // e.g., 'https://api.yourdomain.com'
+                            "https://portfolio-backend-7a2b6514.koyeb.app", // Koyeb backend
                         handler: "StaleWhileRevalidate", // Serve cached version while re-validating in the background
                         options: {
                             cacheName: "api-data-cache",
