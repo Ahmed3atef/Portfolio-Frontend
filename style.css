@@ -343,6 +343,18 @@ nav {
     width: 100%;
 }
 
+/* Mobile Menu Styles */
+#mobile-menu {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    width: 100%;
+}
+
 /* --- Card Styles --- */
 .cyber-card {
     background-color: rgba(26, 12, 59, 0.6);
